@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="twitchApp" lang="en">
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<title>Twitch Viewer</title>
@@ -13,7 +13,7 @@
 		<script type="text/javascript" src="js/lib/angular-route.min.js"></script>
 	</head>
 
-	<body controller="MainController">
+	<body ng-app="twitchApp" controller="MainController">
 		<nav class="navbar navbar-default">
 			<div class="container">
 				<div class="navbar-header">
@@ -42,8 +42,8 @@
 	<script type="text/javascript" src="js/controllers/MainController.js"></script>
 
 	<!-- Services -->
-	<!-- Insert Services Here -->
+	<script type="text/javascript" src="js/services/GetTwitchInfo.js"></script>
 
 	<!-- Directives -->
-	<!-- Insert Directives Here -->
+
 </html>

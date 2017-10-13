@@ -1,9 +1,5 @@
-app.controller('MainController', function($scope, $route, $routeParams, $location) {
-	$scope.name = 'MainController'
-	$scope.$route = $route
-	$scope.$routeParams = $routeParams
-	$scope.$location = $location
-
+app.controller('MainController', ['$scope', 'GetTwitchInfo', function($scope, GetTwitchInfo) {
 	$scope.title = 'Twitch Viewer'
 	$scope.author = 'Joseph Marvin'
-})
+	$scope.info = GetTwitchInfo
+}])

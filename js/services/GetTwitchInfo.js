@@ -1,5 +1,5 @@
 app.factory('GetTwitchInfo', ['$http', function($http) {
-	var streamerArr = ['lobosjr', 'esl_sc2', 'yogscast', 'dansgaming', 'superbestfriendsplay', 'hatfilms', 'freecodecamp']
+	var streamerArr = ['lobosjr', 'esl_sc2', 'yogscast', 'dansgaming', 'superbestfriendsplay', 'hatfilms']
 	var streamList = []
 
 	// for(var i = 0; i < streamerArr.length; i++)

@@ -1,33 +1,11 @@
 app.factory('GetTwitchInfo', ['$http', function($http) {
-	var streamerArr = ['lobosjr', 'esl_sc2', 'yogscast', 'dansgaming', 'superbestfriendsplay', 'hatfilms']
+	var streamerArr = ['lobosjr', 'esl_sc2', 'dansgaming', 'superbestfriendsplay', 'hatfilms']
 	var streamList = []
 
-	// for(var i = 0; i < streamerArr.length; i++)
-	// {
-	// 	$http.get('https://api.twitch.tv/kraken/streams/' + streamerArr[i] + '?client_id=iqs4zor9q0wcwvpuselud1811eg881')
-	// 	.then(successCallback, errorCallback)
-
-	// 	function successCallback(response) {
-	// 		if(response.data.stream != null)
-	// 		{
-	// 			info = response.data.stream.channel.display_name
-	// 			streamList.push(info)
-	// 			return streamList
-	// 		}
-	// 		else
-	// 		{
-	// 			info = "Channel Offline"
-	// 			streamList.push(info)
-	// 			return streamList
-	// 		}
-	// 	}
-
-	// 	function errorCallback(response) {
-	// 		return response
-	// 	}
-	// }
-
-	// return streamList
+	function pushToStreamerArr(name) {
+		streamerArr.push(name)
+		getStreamInfo(streamerArr.length - 1)
+	}
 
 	getStreamInfo(0)
 
@@ -83,5 +61,9 @@ app.factory('GetTwitchInfo', ['$http', function($http) {
 		}
 	}
 
-	return streamList
+	return {
+		streamerArr: streamerArr,
+		streamList: streamList,
+		pushToStreamerArr: pushToStreamerArr
+	}
 }])

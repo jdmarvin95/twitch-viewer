@@ -1,6 +1,9 @@
 app.factory('GetTwitchInfo', ['$http', function($http) {
-	var streamerArr = ['lobosjr', 'esl_sc2', 'dansgaming', 'superbestfriendsplay', 'hatfilms']
+	var streamerArr = ['esl_sc2', 'dansgaming', 'superbestfriendsplay', 'hatfilms', 'lobosjr', 'magic', 'epiclan1', 'asusrog']
 	var streamList = []
+	var nameSort = false
+	var onlineSort = false
+	var gameSort = false
 
 	function pushToStreamerArr(name) {
 		streamerArr.push(name)
@@ -50,7 +53,7 @@ app.factory('GetTwitchInfo', ['$http', function($http) {
 				link: 'https://www.twitch.tv/' + streamer,
 				logo: response.data.logo,
 				status: 'Offline',
-				game: '--'
+				game: ''
 			}
 			streamList.push(obj)
 			return streamList
@@ -61,9 +64,123 @@ app.factory('GetTwitchInfo', ['$http', function($http) {
 		}
 	}
 
+	function sortByName(arr) {
+		var tempArr = arr
+		if(!nameSort) {
+			tempArr.sort(function(a, b) {
+				if(a.name.toLowerCase() < b.name.toLowerCase()) return -1
+				if(a.name.toLowerCase() > b.name.toLowerCase()) return 1
+				return 0
+			})
+			nameSort = true
+		} else {
+			tempArr.sort(function(a, b) {
+				if(a.name.toLowerCase() > b.name.toLowerCase()) return -1
+				if(a.name.toLowerCase() < b.name.toLowerCase()) return 1
+				return 0
+			})
+			nameSort = false
+		}
+		onlineSort = false
+		gameSort = false
+		return tempArr
+	}
+
+	function sortByOnline(arr) {
+		var tempArr = arr
+		if(!onlineSort) {
+			tempArr.sort(function(a, b) {
+				var o1 = a.status.toLowerCase()
+				var o2 = b.status.toLowerCase()
+				var n1 = a.name.toLowerCase()
+				var n2 = b.name.toLowerCase()
+
+				if(o1 > o2) return -1
+				if(o1 < o2) return 1
+				if(n1 < n2) return -1
+				if(n1 > n2) return 1
+				return 0
+			})
+			onlineSort = true
+		} else {
+			tempArr.sort(function(a, b) {
+				var o1 = a.status.toLowerCase()
+				var o2 = b.status.toLowerCase()
+				var n1 = a.name.toLowerCase()
+				var n2 = b.name.toLowerCase()
+
+				if(o1 < o2) return -1
+				if(o1 > o2) return 1
+				if(n1 < n2) return -1
+				if(n1 > n2) return 1
+				return 0
+			})
+			onlineSort = false
+		}
+		nameSort = false
+		gameSort = false
+		return tempArr
+	}
+
+	function sortByGame(arr) {
+		var tempArr = arr
+		var offArr = []
+		if(!gameSort) {
+			tempArr.sort(function(a, b) {
+				var g1 = a.game.toLowerCase()
+				var g2 = b.game.toLowerCase()
+				var n1 = a.name.toLowerCase()
+				var n2 = b.name.toLowerCase()
+
+				if(g1 < g2) return -1
+				if(g1 > g2) return 1
+				if(n1 < n2) return -1
+				if(n1 > n2) return 1
+				return 0
+			})
+			var len = tempArr.length
+			for(var i = 0; i < len; i++) {
+				if(tempArr[i].game == '') {
+					tempArr.push(tempArr.splice(i, 1)[0])
+					i--
+					len--
+				}
+			}
+			gameSort = true
+		} else {
+			tempArr.sort(function(a, b) {
+				var g1 = a.game.toLowerCase()
+				var g2 = b.game.toLowerCase()
+				var n1 = a.name.toLowerCase()
+				var n2 = b.name.toLowerCase()
+
+				if(g1 > g2) return -1
+				if(g1 < g2) return 1
+				if(n1 < n2) return -1
+				if(n1 > n2) return 1
+				return 0
+			})
+			var len = tempArr.length
+			for(var i = 0; i < len; i++) {
+				if(tempArr[i].game == '') {
+					tempArr.push(tempArr.splice(i, 1)[0])
+					i--
+					len--
+				}
+			}
+			gameSort = false
+		}
+		nameSort = false
+		onlineSort = false
+		return tempArr
+	}
+
 	return {
 		streamerArr: streamerArr,
 		streamList: streamList,
-		pushToStreamerArr: pushToStreamerArr
+		pushToStreamerArr: pushToStreamerArr,
+		sortByName: sortByName,
+		sortByOnline: sortByOnline,
+		sortByGame: sortByGame
 	}
 }])

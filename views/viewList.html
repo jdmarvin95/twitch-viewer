@@ -1,12 +1,12 @@
-
-<div class="container">
-	<table id="viewList" ng-controller="ViewListController">
-		<caption>Streamers</caption>
-		<!-- <th>
-			<td>Name</td>
-			<td>Status</td>
-			<td>Game</td>
-		</th> -->
+<div class="container" ng-controller="ViewListController">
+	<div class="sort">
+		<h2>Sort by:</h2>
+		<button class="sort-btn" id="sort-name" ng-click="sortByName()">Name</button>
+		<button class="sort-btn" id="sort-online" ng-click="sortByOnline()">Online</button>
+		<button class="sort-btn" id="sort-game" ng-click="sortByGame()">Game</button>
+	</div>
+	<table id="view-list">
+		<caption><b>Streamers</b></caption>
 		<tbody>
 			<tr ng-repeat="streamer in streamers">
 				<td><a ng-href="{{ streamer.link }}"><img ng-src="{{ streamer.logo }}" /></a></td>
@@ -15,7 +15,7 @@
 				<td><p>{{ streamer.game }}</p></td>
 			</tr>
 			<tr class="add-streamer">
-				<td><a ng-click="addStreamer('yogscast')">Add streamer(s)...</a></td>
+				<td><input id="add-name" type="text" /><input type="button" value="Add" ng-click="addStreamer()" /></td>
 			</tr>
 		</tbody>
 	</table>

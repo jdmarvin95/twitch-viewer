@@ -1,27 +1,27 @@
-#viewList {
+#view-list {
 	border: 1px solid black;
 	width: 100%;
 }
 
-#viewList caption {
+#view-list caption {
 	text-align: center;
 }
 
-#viewList tr td:first-child {
+#view-list tr td:first-child {
 	border-top: 1px solid black;
 	border-right: none;
 }
 
-#viewList td {
+#view-list td {
 	padding: 10px 10px;
 	border-right: 1px solid black;
 	border-bottom: 1px solid black;
 }
 
-#viewList td img {
+#view-list td img {
 	height: 75px;
 }
 
-#viewList p {
+#view-list p {
 	padding-top: 12px;
 }

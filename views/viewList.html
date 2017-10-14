@@ -1,0 +1,21 @@
+<table id="viewList" ng-controller="ViewListController">
+	<caption>Streamers</caption>
+	<th>
+		<td>Name</td>
+		<td>Status</td>
+		<td>Game</td>
+	</th>
+	<tbody ng-repeat="streamer in streamers">
+		<tr>
+			<!-- <td><streamer-info info="streamer"></streamer-info></td> -->
+			<td><img ng-src="{{ streamer.logo }}" height="50px" /></td>
+			<td><a ng-href="{{ streamer.link }}"><p>{{ streamer.name }}</p></a></td>
+			<td><p>{{ streamer.status }}</p></td>
+			<td><p>{{ streamer.game }}</p></td>
+		</tr>
+	</tbody>
+</table>
+<!-- <h1>Streamers</h1>
+<div ng-repeat="streamer in streamers">
+	<p>{{streamer.display_name}}</p>
+</div> -->

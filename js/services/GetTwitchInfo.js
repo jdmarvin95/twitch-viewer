@@ -1,5 +1,5 @@
 app.factory('GetTwitchInfo', ['$http', function($http) {
-	var streamerArr = ['lobosjr', 'esl_sc2', 'yogscast', 'superbestfriendsplay', 'hatfilms']
+	var streamerArr = ['lobosjr', 'esl_sc2', 'yogscast', 'dansgaming', 'superbestfriendsplay', 'hatfilms', 'freecodecamp']
 	var streamList = []
 
 	// for(var i = 0; i < streamerArr.length; i++)
@@ -37,7 +37,14 @@ app.factory('GetTwitchInfo', ['$http', function($http) {
 
 		function successCallback(response) {
 			if(response.data.stream != null) {
-				streamList.push(response.data.stream.channel.display_name)
+				var obj = {
+					name: response.data.stream.channel.display_name,
+					link: 'https://www.twitch.tv/' + response.data.stream.channel.display_name,
+					logo: response.data.stream.channel.logo,
+					status: 'Online',
+					game: response.data.stream.channel.game
+				}
+				streamList.push(obj)
 			} else {
 				getOfflineInfo(streamerArr[i])
 			}
@@ -60,7 +67,14 @@ app.factory('GetTwitchInfo', ['$http', function($http) {
 		.then(successCallback, errorCallback)
 
 		function successCallback(response) {
-			streamList.push(response.data.display_name + " (Offline)")
+			var obj = {
+				name: response.data.display_name,
+				link: 'https://www.twitch.tv/' + streamer,
+				logo: response.data.logo,
+				status: 'Offline',
+				game: '--'
+			}
+			streamList.push(obj)
 			return streamList
 		}
 

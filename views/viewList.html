@@ -9,10 +9,12 @@
 		<caption><b>Streamers</b></caption>
 		<tbody>
 			<tr ng-repeat="streamer in streamers">
-				<td><a ng-href="{{ streamer.link }}"><img ng-src="{{ streamer.logo }}" /></a></td>
+				<td><a ng-href="{{ streamer.link }}"><img class="logo" ng-src="{{ streamer.logo }}" /></a></td>
 				<td><a ng-href="{{ streamer.link }}"><p>{{ streamer.name }}</p></a></td>
 				<td><p>{{ streamer.status }}</p></td>
 				<td><p>{{ streamer.game }}</p></td>
+				<td><p>{{ streamer.id }}</p></td>
+				<td><a id="{{ $index }}" ng-click="removeStreamer($index)"><img class="remove-icon" src="img/removeIcon.svg" /></a></td>
 			</tr>
 			<tr class="add-streamer">
 				<td><input id="add-name" type="text" /><input type="button" value="Add" ng-click="addStreamer()" /></td>

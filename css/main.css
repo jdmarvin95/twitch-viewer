@@ -12,16 +12,28 @@
 	border-right: none;
 }
 
+#view-list tr td {
+	border-right: none;
+}
+
 #view-list td {
 	padding: 10px 10px;
 	border-right: 1px solid black;
 	border-bottom: 1px solid black;
 }
 
-#view-list td img {
+.logo {
 	height: 75px;
 }
 
 #view-list p {
 	padding-top: 12px;
+}
+
+.remove-icon {
+	height: 20px;
+}
+
+.remove-icon:hover {
+	cursor: pointer;
 }

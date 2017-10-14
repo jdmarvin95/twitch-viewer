@@ -10,6 +10,11 @@ app.factory('GetTwitchInfo', ['$http', function($http) {
 		getStreamInfo(streamerArr.length - 1)
 	}
 
+	function removeFromStreamerArr(ind) {
+		streamerArr.splice(ind, 1)
+		streamList.splice(ind, 1)
+	}
+
 	getStreamInfo(0)
 
 	function getStreamInfo(i) {
@@ -179,6 +184,7 @@ app.factory('GetTwitchInfo', ['$http', function($http) {
 		streamerArr: streamerArr,
 		streamList: streamList,
 		pushToStreamerArr: pushToStreamerArr,
+		removeFromStreamerArr: removeFromStreamerArr,
 		sortByName: sortByName,
 		sortByOnline: sortByOnline,
 		sortByGame: sortByGame

@@ -6,6 +6,11 @@ app.controller('ViewListController', ['$scope', 'GetTwitchInfo', function($scope
 		GetTwitchInfo.pushToStreamerArr(val)
 	}
 
+	$scope.removeStreamer = function(ele_id) {
+		var element = document.getElementById(ele_id).getAttribute('id')
+		GetTwitchInfo.removeFromStreamerArr(element)
+	}
+
 	$scope.sortByName = function() {
 		GetTwitchInfo.sortByName(GetTwitchInfo.streamList)
 	}

@@ -129,6 +129,7 @@ app.factory('GetTwitchInfo', ['$http', '$q', function($http, $q) {
 
 	function addToDB(str) {
 		var name = str
+		var obj = {}
 		$http.get('https://api.twitch.tv/kraken/users/' + name + '?client_id=iqs4zor9q0wcwvpuselud1811eg881')
 		.then(function(response) {
 			var data = {
@@ -138,6 +139,23 @@ app.factory('GetTwitchInfo', ['$http', '$q', function($http, $q) {
 				TwitchLink: 'https://www.twitch.tv/' + response.data.name,
 				Logo: response.data.logo
 			}
+			obj.name = response.data.name
+			obj.dispName = response.data.display_name
+			obj.link = 'https://www.twitch.tv/' + response.data.name
+			obj.logo = response.data.logo
+
+			$http.get('https://api.twitch.tv/kraken/streams/' + name + '?client_id=iqs4zor9q0wcwvpuselud1811eg881')
+			.then(function(response) {
+				if(response.data.stream != null) {
+					obj.status = 'Online'
+					obj.game = response.data.stream.channel.game
+				} else {
+					obj.status = 'Offline'
+					obj.game = ''
+				}
+				streamerArr.push(obj.name)
+				streamList.push(obj)
+			})
 			$http.get('http://localhost:8080/addRow', {params: data})
 		})
 	}

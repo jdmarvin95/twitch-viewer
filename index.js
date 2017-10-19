@@ -1,6 +1,6 @@
-const express = require('express')
-const Client = require('mariasql')
-const app = express()
+var express = require('express')
+var Client = require('mariasql')
+var app = express()
 
 app.use(express.static('www'))
 
@@ -30,7 +30,7 @@ app.listen(8080, function () {
   console.log('App listening on port 8080')
 })
 
-const c = new Client({
+var c = new Client({
 	host: 'localhost',
 	user: 'jdmarvin95',
 	password: 'Slipknot95!',

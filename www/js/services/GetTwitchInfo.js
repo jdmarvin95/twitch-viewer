@@ -2,20 +2,9 @@ app.factory('GetTwitchInfo', ['$http', '$q', function($http, $q) {
 	var streamerArr = []
 	var streamList = []
 	var onlineList = []
-	var combList = []
 	var nameSort = false
 	var onlineSort = false
 	var gameSort = false
-
-	function pushToStreamerArr(name) {
-		streamerArr.push(name)
-		getStreamInfo(streamerArr.length - 1)
-	}
-
-	function removeFromStreamerArr(ind) {
-		streamerArr.splice(ind, 1)
-		streamList.splice(ind, 1)
-	}
 
 	function sortByName(arr) {
 		var tempArr = arr
@@ -127,43 +116,6 @@ app.factory('GetTwitchInfo', ['$http', '$q', function($http, $q) {
 		return tempArr
 	}
 
-	function addToDB(str) {
-		var name = str
-		var obj = {}
-		$http.get('https://api.twitch.tv/kraken/users/' + name + '?client_id=iqs4zor9q0wcwvpuselud1811eg881')
-		.then(function(response) {
-			var data = {
-				DisplayName: response.data.display_name,
-				Name: response.data.name,
-				ApiLink: 'https://api.twitch.tv/kraken/streams/' + response.data.name + '?client_id=iqs4zor9q0wcwvpuselud1811eg881',
-				TwitchLink: 'https://www.twitch.tv/' + response.data.name,
-				Logo: response.data.logo
-			}
-			obj.name = response.data.name
-			obj.dispName = response.data.display_name
-			obj.link = 'https://www.twitch.tv/' + response.data.name
-			obj.logo = response.data.logo
-
-			$http.get('https://api.twitch.tv/kraken/streams/' + name + '?client_id=iqs4zor9q0wcwvpuselud1811eg881')
-			.then(function(response) {
-				if(response.data.stream != null) {
-					obj.status = 'Online'
-					obj.game = response.data.stream.channel.game
-				} else {
-					obj.status = 'Offline'
-					obj.game = ''
-				}
-				streamerArr.push(obj.name)
-				streamList.push(obj)
-			})
-			$http.get('http://localhost:8080/addRow', {params: data})
-		})
-	}
-	
-	getDBData().then(function() {
-		getStreamData(streamerArr)
-	})
-
 	function getDBData() {
 		return $http.get('http://localhost:8080/getRows').then(successCallback, errorCallback)
 		function successCallback(data) {
@@ -178,6 +130,7 @@ app.factory('GetTwitchInfo', ['$http', '$q', function($http, $q) {
 				streamerArr.push(obj.name)
 				streamList.push(obj)
 			}
+			getStreamData(streamerArr)
 			return streamList
 		}
 		function errorCallback(data) {
@@ -234,11 +187,56 @@ app.factory('GetTwitchInfo', ['$http', '$q', function($http, $q) {
 		}
 	}
 
+	function addToDB(str) {
+		return $http.get('https://api.twitch.tv/kraken/users/' + str + '?client_id=iqs4zor9q0wcwvpuselud1811eg881')
+		.then(function(response) {
+			var data = {
+				DisplayName: response.data.display_name,
+				Name: response.data.name,
+				ApiLink: 'https://api.twitch.tv/kraken/streams/' + response.data.name + '?client_id=iqs4zor9q0wcwvpuselud1811eg881',
+				TwitchLink: 'https://www.twitch.tv/' + response.data.name,
+				Logo: response.data.logo
+			}
+			var obj = {
+				name: response.data.name,
+				dispName: response.data.display_name,
+				link: 'https://www.twitch.tv/' + response.data.name,
+				logo: response.data.logo
+			}
+
+			$http.get('https://api.twitch.tv/kraken/streams/' + str + '?client_id=iqs4zor9q0wcwvpuselud1811eg881')
+			.then(function(response) {
+				if(response.data.stream != null) {
+					obj.status = 'Online'
+					obj.game = response.data.stream.channel.game
+				} else {
+					obj.status = 'Offline'
+					obj.game = ''
+				}
+				streamerArr.push(obj.name)
+				streamList.push(obj)
+			})
+			$http.get('http://localhost:8080/addRow', {params: data})
+		}, function(response) {
+			return response
+		})
+	}
+
+	function removeFromDB(ind) {
+		var data = {
+			Name: streamerArr[ind]
+		}
+		$http.get('http://localhost:8080/delRow', {params: data})
+		streamerArr.splice(ind, 1)
+		streamList.splice(ind, 1)
+	}
+
 	return {
+		getDBData: getDBData,
 		addToDB: addToDB,
+		removeFromDB: removeFromDB,
+		streamerArr: streamerArr,
 		streamList: streamList,
-		pushToStreamerArr: pushToStreamerArr,
-		removeFromStreamerArr: removeFromStreamerArr,
 		sortByName: sortByName,
 		sortByOnline: sortByOnline,
 		sortByGame: sortByGame

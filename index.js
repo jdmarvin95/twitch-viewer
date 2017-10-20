@@ -8,6 +8,13 @@ app.get('/', function (req, res) {
   res.send(index.html)
 })
 
+app.get('/getRows', function(req, res) {
+	c.query(getRows(), function(err, rows) {
+		if(err) throw err
+		return res.json(rows)
+	})
+})
+
 app.get('/addRow', function(req, res) {
 	var dispName = req.query.DisplayName
 	var name = req.query.Name
@@ -15,13 +22,23 @@ app.get('/addRow', function(req, res) {
 	var twitchLink = req.query.TwitchLink
 	var logo = req.query.Logo
 
-	c.query('INSERT INTO streams (DisplayName, Name, ApiLink, TwitchLink, Logo) VALUES (:DisplayName, :Name, :ApiLink, :TwitchLink, :Logo)', {
+	c.query(addRow({
 		DisplayName: dispName,
 		Name: name,
 		ApiLink: apiLink,
 		TwitchLink: twitchLink,
 		Logo: logo
-	}, function(err, rows) {
+	}), function(err, rows) {
+		if(err) throw err
+	})
+})
+
+app.get('/delRow', function(req, res) {
+	var name = req.query.Name
+
+	c.query(delRow({
+		Name: name
+	}), function(err, rows) {
 		if(err) throw err
 	})
 })
@@ -37,27 +54,9 @@ var c = new Client({
 	db: 'streamers'
 })
 
-c.query('SELECT * FROM streams', function(err, rows) {
-	if(err) throw err
-	var dbRows = rows
-
-	app.get('/getRows', function(req, res) {
-		return res.json(dbRows)
-	})
-})
-
+var getRows = c.prepare('SELECT * FROM streams')
+var addRow = c.prepare('INSERT INTO streams (DisplayName, Name, ApiLink, TwitchLink, Logo) VALUES (:DisplayName, :Name, :ApiLink, :TwitchLink, :Logo)')
 var delRow = c.prepare('DELETE FROM streams WHERE Name = :Name')
-
-// c.query(addRow({
-// 	DisplayName: 'SuperBestFriendsPlay',
-// 	Name: 'superbestfriendsplay',
-// 	ApiLink: 'https://api.twitch.tv/kraken/streams/superbestfriendsplay?client_id=iqs4zor9q0wcwvpuselud1811eg881',
-// 	TwitchLink: 'https://www.twitch.tv/superbestfriendsplay',
-// 	Logo: 'https://static-cdn.jtvnw.net/jtv_user_pictures/superbestfriendsplay-profile_image-efe1de9446286860-300x300.jpeg'
-// }), function(err, rows) {
-// 	if(err) throw err
-// 	console.dir(rows)
-// })
 
 c.end()
 

@@ -50,7 +50,7 @@ app.listen(8080, function () {
 var c = new Client({
 	host: 'localhost',
 	user: 'jdmarvin95',
-	password: 'Slipknot95!',
+	password: '',
 	db: 'streamers'
 })
 
